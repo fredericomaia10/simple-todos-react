@@ -1,31 +1,18 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
-
-export const Tasks = new Mongo.Collection('tasks');
-
-if(Meteor.isServer) {
-  Meteor.publish("tasks", function tasksPublication(){
-    return Tasks.find({
-      $or: [
-        { private: { $ne: true } },
-        { owner: this.userId }
-      ]
-    });
-  });
-}
+import { Tasks } from './tasks.js';
 
 Meteor.methods({
   'tasks.insert'(text){
-     check(text, String);
-     if(!this.userId) {
-       throw new Meteor.Error('not authorized');
-     }
-     Tasks.insert({
-       text,
-       createdAt: new Date(),
-       owner: this.userId,
-       username: Meteor.users.findOne(this.userId).username
+    check(text, String);
+    if(!this.userId) {
+      throw new Meteor.Error('not authorized');
+    }
+    Tasks.insert({
+      text,
+      createdAt: new Date(),
+      owner: this.userId,
+      username: Meteor.users.findOne(this.userId).username
     });
   },
 

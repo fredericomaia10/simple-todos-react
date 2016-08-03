@@ -1,8 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import React, { Component, PropTypes } from 'react';
-
-import { Tasks } from '../api/tasks.js';
-
 import classnames from 'classnames';
 
 export default class Task extends Component {
